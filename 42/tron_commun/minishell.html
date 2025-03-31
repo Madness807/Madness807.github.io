@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minishell - joterret</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.1.0/css/xterm.css">
+    <script src="https://cdn.jsdelivr.net/npm/xterm@5.1.0/lib/xterm.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.7.0/lib/xterm-addon-fit.js"></script>
+    <style>
+        body {
+            background-image: url('../background_login-a4e0666f73c02f025f590b474b394fd86e1cae20e95261a6e4862c2d0faa1b04.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .glass-effect {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: all 0.3s ease;
+        }
+        .glass-effect:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45);
+        }
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        #mobile-menu {
+            transition: all 0.3s ease;
+        }
+        .terminal-container {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .terminal {
+            height: 400px;
+            width: 100%;
+        }
+        .xterm {
+            padding: 0.5rem;
+        }
+        .terminal-controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .terminal-button {
+            padding: 0.25rem 0.5rem;
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 0.25rem;
+            color: #60a5fa;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .terminal-button:hover {
+            background: rgba(59, 130, 246, 0.3);
+        }
+    </style>
+</head>
+<body class="text-white font-mono min-h-screen">
+    <nav class="glass-effect fixed top-0 left-0 right-0 w-full z-50" role="navigation" aria-label="Navigation principale">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <a href="../index.html" class="flex items-center space-x-2" aria-label="Retour à l'accueil">
+                    <img src="../42_logo-7dfc9110a5319a308863b96bda33cea995046d1731cebb735e41b16255106c12.svg" alt="42 Logo" class="h-8">
+                    <span class="text-xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">joterret</span>
+                </a>
+                <button id="mobile-menu-button" class="md:hidden text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                <div class="hidden md:flex space-x-6" role="menubar">
+                    <a href="../about.html" class="nav-link" role="menuitem">À propos</a>
+                    <a href="../skills.html" class="nav-link" role="menuitem">Compétences</a>
+                    <a href="../projects.html" class="nav-link" role="menuitem">Projets</a>
+                    <a href="../contact.html" class="nav-link" role="menuitem">Contact</a>
+                </div>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden" role="menu" aria-labelledby="mobile-menu-button">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a href="../about.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700" role="menuitem">À propos</a>
+                    <a href="../skills.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700" role="menuitem">Compétences</a>
+                    <a href="../projects.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700" role="menuitem">Projets</a>
+                    <a href="../contact.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700" role="menuitem">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 pt-20">
+        <header class="text-center mb-10 glass-effect p-8 rounded-lg">
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Minishell</h1>
+            <p class="mt-4 text-gray-300">Un shell minimaliste implémentant les fonctionnalités de base d'un terminal Unix</p>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+            <div class="glass-effect p-6 rounded-lg">
+                <h2 class="text-2xl font-semibold mb-4">Description</h2>
+                <p class="text-gray-300 mb-4">
+                    Minishell est un projet qui consiste à créer un shell minimaliste en C, implémentant les fonctionnalités de base d'un terminal Unix.
+                    Ce projet permet de comprendre en profondeur le fonctionnement d'un shell et les concepts de programmation système.
+                </p>
+                <h3 class="text-xl font-semibold mb-2">Fonctionnalités</h3>
+                <ul class="list-disc list-inside text-gray-300 mb-4">
+                    <li>Exécution de commandes simples</li>
+                    <li>Gestion des redirections (>, >>, <)</li>
+                    <li>Gestion des pipes (|)</li>
+                    <li>Variables d'environnement</li>
+                    <li>Signaux (Ctrl+C, Ctrl+D, Ctrl+\)</li>
+                </ul>
+                <h3 class="text-xl font-semibold mb-2">Technologies</h3>
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">C</span>
+                    <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Unix</span>
+                    <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Shell</span>
+                </div>
+                <a href="https://github.com/Madness807/minishell" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+                    <i class="fab fa-github mr-2"></i>
+                    Voir le code
+                </a>
+            </div>
+
+            <div class="glass-effect p-6 rounded-lg">
+                <h2 class="text-2xl font-semibold mb-4">Démonstration</h2>
+                <div class="terminal-container">
+                    <div class="terminal-controls">
+                        <button class="terminal-button" onclick="startMinishell()">
+                            <i class="fas fa-play mr-1"></i> Démarrer
+                        </button>
+                        <button class="terminal-button" onclick="clearTerminal()">
+                            <i class="fas fa-trash mr-1"></i> Effacer
+                        </button>
+                    </div>
+                    <div id="minishell-terminal" class="terminal"></div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="text-center text-gray-400 mb-10 text-sm glass-effect p-4 rounded-lg">
+            Made with <i class="fas fa-heart text-red-500"></i> by joterret — Powered by Tailwind CSS
+        </footer>
+    </div>
+
+    <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+            mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+                mobileMenuButton.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Terminal management
+        let term;
+        let fitAddon;
+
+        function initTerminal(terminalId) {
+            term = new Terminal({
+                cursorBlink: true,
+                fontSize: 14,
+                fontFamily: 'monospace',
+                theme: {
+                    background: '#000000',
+                    foreground: '#ffffff',
+                    cursor: '#ffffff',
+                    selection: '#264f78',
+                    black: '#000000',
+                    red: '#ff0000',
+                    green: '#00ff00',
+                    yellow: '#ffff00',
+                    blue: '#0000ff',
+                    magenta: '#ff00ff',
+                    cyan: '#00ffff',
+                    white: '#ffffff',
+                    brightBlack: '#808080',
+                    brightRed: '#ff0000',
+                    brightGreen: '#00ff00',
+                    brightYellow: '#ffff00',
+                    brightBlue: '#0000ff',
+                    brightMagenta: '#ff00ff',
+                    brightCyan: '#00ffff',
+                    brightWhite: '#ffffff'
+                }
+            });
+
+            fitAddon = new FitAddon.FitAddon();
+            term.loadAddon(fitAddon);
+
+            term.open(document.getElementById(terminalId));
+            fitAddon.fit();
+
+            term.writeln('Bienvenue dans le terminal Minishell!');
+            term.writeln('Tapez "help" pour voir les commandes disponibles.');
+        }
+
+        function startMinishell() {
+            if (!term) {
+                initTerminal('minishell-terminal');
+            }
+            
+            term.writeln('\r\n$ ');
+            term.prompt = () => {
+                term.write('\r\n$ ');
+            };
+
+            term.onData(e => {
+                switch (e) {
+                    case '\r': // Enter
+                        term.write('\r\n$ ');
+                        break;
+                    case '\u007f': // Backspace
+                        if (term._core.buffer.x > 2) {
+                            term.write('\b \b');
+                        }
+                        break;
+                    default:
+                        term.write(e);
+                }
+            });
+        }
+
+        function clearTerminal() {
+            if (term) {
+                term.clear();
+                term.writeln('Terminal effacé.');
+                term.writeln('Tapez "help" pour voir les commandes disponibles.');
+                term.writeln('\r\n$ ');
+            }
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (fitAddon) {
+                fitAddon.fit();
+            }
+        });
+    </script>
+</body>
+</html> 

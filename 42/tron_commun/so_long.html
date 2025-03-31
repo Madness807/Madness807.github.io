@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>42 Lausanne - so_long</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-image: url('../background_login-a4e0666f73c02f025f590b474b394fd86e1cae20e95261a6e4862c2d0faa1b04.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #e5e7eb;
+        }
+        .glass-effect {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .tech-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px;
+            border-radius: 6px;
+            margin: 2px;
+            transition: transform 0.2s;
+            background: transparent;
+        }
+        .tech-badge:hover {
+            transform: translateY(-2px);
+        }
+        .tech-icon {
+            width: 24px;
+            height: 24px;
+        }
+        .feature-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .code-block {
+            background: rgba(17, 24, 39, 0.9);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .screenshot {
+            transition: transform 0.3s ease;
+        }
+        .screenshot:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="glass-effect fixed w-full z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <a href="../index.html" class="flex items-center space-x-2">
+                    <img src="../42_logo-7dfc9110a5319a308863b96bda33cea995046d1731cebb735e41b16255106c12.svg" alt="42 Logo" class="h-8">
+                    <span class="text-xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">joterret</span>
+                </a>
+                <div class="hidden md:flex space-x-6">
+                    <a href="../index.html" class="nav-link">Accueil</a>
+                    <a href="#description" class="nav-link">Description</a>
+                    <a href="#features" class="nav-link">Fonctionnalités</a>
+                    <a href="#installation" class="nav-link">Installation</a>
+                    <a href="#usage" class="nav-link">Utilisation</a>
+                    <a href="#screenshots" class="nav-link">Screenshots</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-24 pb-12 px-4">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">so_long</h1>
+            <p class="text-xl text-gray-300 mb-8">Jeu 2D avec minilibx</p>
+            <div class="flex justify-center space-x-4">
+                <a href="https://github.com/Madness807/so_long" class="glass-effect px-6 py-3 rounded-lg hover:bg-opacity-80 transition-all">
+                    <i class="fab fa-github mr-2"></i>Voir sur GitHub
+                </a>
+                <a href="#installation" class="glass-effect px-6 py-3 rounded-lg hover:bg-opacity-80 transition-all">
+                    <i class="fas fa-download mr-2"></i>Installer
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Description Section -->
+    <section id="description" class="py-12 px-4">
+        <div class="container mx-auto">
+            <div class="glass-effect rounded-lg p-8">
+                <h2 class="text-3xl font-bold mb-6">Description</h2>
+                <div class="prose prose-invert max-w-none">
+                    <p>so_long est un petit jeu 2D développé avec la bibliothèque graphique minilibx. Le joueur doit collecter tous les objets et atteindre la sortie en évitant les obstacles.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technologies Section -->
+    <section class="py-12 px-4">
+        <div class="container mx-auto">
+            <div class="glass-effect rounded-lg p-8">
+                <h2 class="text-3xl font-bold mb-6">Technologies Utilisées</h2>
+                <div class="flex flex-wrap gap-4">
+                    <span class="tech-badge">
+                        <img src="../logo_tech/C.svg" alt="C" class="tech-icon" title="C">
+                    </span>
+                    <span class="tech-badge">
+                        <i class="fas fa-gamepad tech-icon" title="Minilibx"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-12 px-4">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold mb-8 text-center">Fonctionnalités</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass-effect p-6 rounded-lg feature-card">
+                    <h3 class="text-xl font-semibold mb-4">Graphismes 2D</h3>
+                    <p>Rendu graphique avec la bibliothèque minilibx</p>
+                </div>
+                <div class="glass-effect p-6 rounded-lg feature-card">
+                    <h3 class="text-xl font-semibold mb-4">Gestion des Collisions</h3>
+                    <p>Détection des collisions avec les murs et les objets</p>
+                </div>
+                <div class="glass-effect p-6 rounded-lg feature-card">
+                    <h3 class="text-xl font-semibold mb-4">Système de Score</h3>
+                    <p>Comptage des objets collectés et des mouvements</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section id="installation" class="py-12 px-4">
+        <div class="container mx-auto">
+            <div class="glass-effect rounded-lg p-8">
+                <h2 class="text-3xl font-bold mb-6">Installation</h2>
+                <div class="code-block">
+                    <p>git clone https://github.com/Madness807/so_long.git</p>
+                    <p>cd so_long</p>
+                    <p>make</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Usage Section -->
+    <section id="usage" class="py-12 px-4">
+        <div class="container mx-auto">
+            <div class="glass-effect rounded-lg p-8">
+                <h2 class="text-3xl font-bold mb-6">Utilisation</h2>
+                <div class="prose prose-invert max-w-none">
+                    <p>Pour lancer le jeu :</p>
+                    <div class="code-block mt-4">
+                        <p>./so_long maps/map1.ber</p>
+                    </div>
+                    <p class="mt-4">Contrôles :</p>
+                    <ul class="list-disc list-inside mt-2">
+                        <li>Flèches directionnelles pour se déplacer</li>
+                        <li>ESC pour quitter</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screenshots Section -->
+    <section id="screenshots" class="py-12 px-4">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold mb-8 text-center">Screenshots</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Ajouter des screenshots ici -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="glass-effect py-8 px-4 mt-12">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 joterret. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-8 right-8 glass-effect p-3 rounded-full opacity-0 transition-opacity duration-300 hover:bg-opacity-80">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Back to Top Button
+        const backToTopButton = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopButton.style.opacity = '1';
+            } else {
+                backToTopButton.style.opacity = '0';
+            }
+        });
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
